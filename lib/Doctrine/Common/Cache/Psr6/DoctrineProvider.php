@@ -17,8 +17,6 @@ use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\DoctrineAdapter as SymfonyDoctrineAdapter;
 use Symfony\Contracts\Service\ResetInterface;
 
-use function rawurlencode;
-
 /**
  * This class was copied from the Symfony Framework, see the original copyright
  * notice above. The code is distributed subject to the license terms in
@@ -72,7 +70,7 @@ final class DoctrineProvider extends CacheProvider
      */
     protected function doFetch($id)
     {
-        $item = $this->pool->getItem(rawurlencode($id));
+        $item = $this->pool->getItem($id);
 
         return $item->isHit() ? $item->get() : false;
     }
@@ -84,7 +82,7 @@ final class DoctrineProvider extends CacheProvider
      */
     protected function doContains($id)
     {
-        return $this->pool->hasItem(rawurlencode($id));
+        return $this->pool->hasItem($id);
     }
 
     /**
@@ -94,7 +92,7 @@ final class DoctrineProvider extends CacheProvider
      */
     protected function doSave($id, $data, $lifeTime = 0)
     {
-        $item = $this->pool->getItem(rawurlencode($id));
+        $item = $this->pool->getItem($id);
 
         if (0 < $lifeTime) {
             $item->expiresAfter($lifeTime);
@@ -110,7 +108,7 @@ final class DoctrineProvider extends CacheProvider
      */
     protected function doDelete($id)
     {
-        return $this->pool->deleteItem(rawurlencode($id));
+        return $this->pool->deleteItem($id);
     }
 
     /**
